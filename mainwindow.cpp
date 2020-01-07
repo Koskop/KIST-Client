@@ -79,6 +79,7 @@ void MainWindow::loadFirstQuery() {
 }
 
 void MainWindow::processFirstQuery() {
+  this->ui->comboBox->clear();
   QStringList strL;
   for (int i = 0; i < this->requestType0[1].toInt(); i++) {
     strL << this->requestType0[2 + i][1].toString();
@@ -138,17 +139,69 @@ void MainWindow::processSecondQuery() {
 }
 
 void MainWindow::loadThirsQuery() {
+  QJsonDocument jsonDoc;
+  QJsonArray jsonMainArray;
   if (this->socket->waitForConnected(500)) {
-    this->socket->write("0");
-    qDebug() << "write 0";
+    jsonMainArray.push_back("2");
+    jsonDoc.setArray(jsonMainArray);
+    this->socket->write(jsonDoc.toBinaryData());
+    qDebug() << "write 2";
   }
 }
 
-void MainWindow::processThirsQuery() {}
+void MainWindow::processThirsQuery() {
+  this->ui->comboBox_2->clear();
+  QStringList strL;
+  for (int i = 0; i < this->requestType2[1].toInt(); i++) {
+    strL << this->requestType2[2 + i][1].toString();
+  }
+  this->ui->comboBox_2->addItems(strL);
+}
 
-void MainWindow::loadFourthQuery() {}
+void MainWindow::loadFourthQuery() {
+  int cathedraId = -123;
+  QJsonDocument jsonDoc;
+  QJsonArray jsonMainArray;
+  for (int i = 0; i < this->requestType2[1].toInt(); i++) {
+    if (this->requestType2[2 + i][1].toString() ==
+        this->ui->comboBox_2->currentText()) {
+      cathedraId = this->requestType0[2 + i][0].toString().toInt();
+    }
+  }
 
-void MainWindow::processFourthQuery() {}
+  if (this->socket->waitForConnected(500)) {
+    jsonMainArray.push_back("3");
+    jsonMainArray.push_back(QString::number(cathedraId));
+    jsonDoc.setArray(jsonMainArray);
+    this->socket->write(jsonDoc.toBinaryData());
+    qDebug() << "write 3";
+    qDebug() << "Cathedra ID =" << cathedraId;
+  }
+}
+
+void MainWindow::processFourthQuery() {
+  QStandardItemModel *model = new QStandardItemModel;
+  QStandardItem *item;
+
+  //Заголовки столбцов
+  QStringList horizontalHeader;
+  horizontalHeader.append("Speciality name");
+  horizontalHeader.append("Group code");
+
+  model->setHorizontalHeaderLabels(horizontalHeader);
+
+  for (int var = 0; var < requestType3[1].toInt(); ++var) {
+    item = new QStandardItem(requestType3[2 + var][0].toString());
+    model->setItem(var, 0, item);
+    item = new QStandardItem(requestType3[2 + var][1].toString());
+    model->setItem(var, 1, item);
+  }
+
+  ui->tableView_2->setModel(model);
+
+  ui->tableView_2->resizeRowsToContents();
+  ui->tableView_2->resizeColumnsToContents();
+}
 
 void MainWindow::loadFivethQuery() {}
 
@@ -161,3 +214,13 @@ void MainWindow::processSixthQuery() {}
 void MainWindow::sockDisc() { this->socket->deleteLater(); }
 
 void MainWindow::on_pushButton_released() { this->loadSecondQuery(); }
+
+void MainWindow::on_pushButton_2_released() { this->loadFourthQuery(); }
+
+void MainWindow::on_pushButton_3_released() { this->loadSixthQuery(); }
+
+void MainWindow::on_tabWidget_currentChanged(int index) {
+  if (index == 0) this->loadFirstQuery();
+  if (index == 1) this->loadThirsQuery();
+  if (index == 2) this->loadFivethQuery();
+}

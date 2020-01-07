@@ -46,6 +46,12 @@ class MainWindow : public QMainWindow
  private slots:
   void on_pushButton_released();
 
+  void on_tabWidget_currentChanged(int index);
+
+  void on_pushButton_2_released();
+
+  void on_pushButton_3_released();
+
  private:
   QJsonDocument requestType0;
   QJsonDocument requestType1;
