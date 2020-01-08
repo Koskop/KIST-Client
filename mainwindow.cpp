@@ -165,7 +165,7 @@ void MainWindow::loadFourthQuery() {
   for (int i = 0; i < this->requestType2[1].toInt(); i++) {
     if (this->requestType2[2 + i][1].toString() ==
         this->ui->comboBox_2->currentText()) {
-      cathedraId = this->requestType0[2 + i][0].toString().toInt();
+      cathedraId = this->requestType2[2 + i][0].toString().toInt();
     }
   }
 
@@ -203,13 +203,70 @@ void MainWindow::processFourthQuery() {
   ui->tableView_2->resizeColumnsToContents();
 }
 
-void MainWindow::loadFivethQuery() {}
+void MainWindow::loadFivethQuery() {
+  QJsonDocument jsonDoc;
+  QJsonArray jsonMainArray;
+  if (this->socket->waitForConnected(500)) {
+    jsonMainArray.push_back("4");
+    jsonDoc.setArray(jsonMainArray);
+    this->socket->write(jsonDoc.toBinaryData());
+    qDebug() << "write 4";
+  }
+}
 
-void MainWindow::processFivethQuery() {}
+void MainWindow::processFivethQuery() {
+  this->ui->comboBox_3->clear();
+  QStringList strL;
+  for (int i = 0; i < this->requestType4[1].toInt(); i++) {
+    strL << this->requestType4[2 + i][1].toString();
+  }
+  this->ui->comboBox_3->addItems(strL);
+}
 
-void MainWindow::loadSixthQuery() {}
+void MainWindow::loadSixthQuery() {
+  this->ui->label_4->clear();
+  int studentId = -123;
+  QJsonDocument jsonDoc;
+  QJsonArray jsonMainArray;
+  for (int i = 0; i < this->requestType4[1].toInt(); i++) {
+    if (this->requestType4[2 + i][1].toString() ==
+        this->ui->comboBox_3->currentText()) {
+      studentId = this->requestType4[2 + i][0].toString().toInt();
+    }
+  }
 
-void MainWindow::processSixthQuery() {}
+  if (this->socket->waitForConnected(500)) {
+    jsonMainArray.push_back("5");
+    jsonMainArray.push_back(QString::number(studentId));
+    jsonDoc.setArray(jsonMainArray);
+    this->socket->write(jsonDoc.toBinaryData());
+    qDebug() << "write 5";
+    qDebug() << "Student ID =" << studentId;
+  }
+}
+
+void MainWindow::processSixthQuery() {
+  QStandardItemModel *model = new QStandardItemModel;
+  QStandardItem *item;
+
+  //Заголовки столбцов
+  QStringList horizontalHeader;
+  horizontalHeader.append("Mark");
+
+  model->setHorizontalHeaderLabels(horizontalHeader);
+
+  this->ui->label_4->setText(requestType5[2].toString());
+
+  for (int var = 0; var < requestType5[1].toInt(); ++var) {
+    item = new QStandardItem(requestType5[3][0 + var].toString());
+    model->setItem(var, 0, item);
+  }
+
+  ui->tableView_3->setModel(model);
+
+  ui->tableView_3->resizeRowsToContents();
+  ui->tableView_3->resizeColumnsToContents();
+}
 
 void MainWindow::sockDisc() { this->socket->deleteLater(); }
 
