@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>801</width>
-      <height>601</height>
+      <height>671</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -46,7 +46,7 @@
         <x>10</x>
         <y>40</y>
         <width>771</width>
-        <height>491</height>
+        <height>251</height>
        </rect>
       </property>
       <property name="sortingEnabled">
@@ -57,7 +57,7 @@
       <property name="geometry">
        <rect>
         <x>669</x>
-        <y>540</y>
+        <y>300</y>
         <width>111</width>
         <height>21</height>
        </rect>
@@ -77,7 +77,7 @@
         <x>10</x>
         <y>40</y>
         <width>771</width>
-        <height>491</height>
+        <height>251</height>
        </rect>
       </property>
      </widget>
@@ -85,7 +85,7 @@
       <property name="geometry">
        <rect>
         <x>669</x>
-        <y>540</y>
+        <y>300</y>
         <width>111</width>
         <height>21</height>
        </rect>
@@ -118,7 +118,7 @@
         <x>10</x>
         <y>90</y>
         <width>771</width>
-        <height>441</height>
+        <height>201</height>
        </rect>
       </property>
      </widget>
@@ -126,7 +126,7 @@
       <property name="geometry">
        <rect>
         <x>669</x>
-        <y>540</y>
+        <y>300</y>
         <width>111</width>
         <height>21</height>
        </rect>

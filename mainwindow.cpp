@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
   this->socket = new QTcpSocket(this);
   connect(socket, SIGNAL(readyRead()), this, SLOT(sockReady()));
   connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
-  this->socket->connectToHost("localhost", 4567);
+  this->socket->connectToHost("77.47.224.70", 4567);
   this->loadFirstQuery();
 }
 
